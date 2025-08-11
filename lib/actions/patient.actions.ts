@@ -27,16 +27,27 @@ export const createUser = async (user: CreateUserParams) => {
       user.name
     );
     return parseStringify(newuser);
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Network or fetch errors
-    if (error?.cause && error.cause.code === "ETIMEDOUT") {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "cause" in error &&
+      (error as any).cause &&
+      (error as any).cause.code === "ETIMEDOUT"
+    ) {
       console.error("Network error (ETIMEDOUT) in createUser:", error);
       return {
         error: "Network timeout. Please check Appwrite server connectivity.",
       };
     }
     // Appwrite logical errors
-    if (error && error.code === 409) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as any).code === 409
+    ) {
       try {
         const existingUser = await users.list([
           Query.equal("email", [user.email]),

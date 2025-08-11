@@ -26,8 +26,8 @@ export enum FieldType {
   SKELETON = "skeleton",
 }
 
-interface FormFieldProps {
-  control: Control<any>;
+interface FormFieldProps<T = unknown> {
+  control: Control<T>;
   name: string;
   label?: string;
   placeholder?: string;
@@ -37,16 +37,16 @@ interface FormFieldProps {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
-  renderSkeleton?: (field: any) => React.ReactNode;
+  renderSkeleton?: (field: T) => React.ReactNode;
   fieldType: FieldType;
 }
 
-const InputRenderer = ({
+const InputRenderer = <T,>({
   field,
   config,
 }: {
-  field: any;
-  config: FormFieldProps;
+  field: T;
+  config: FormFieldProps<T>;
 }) => {
   switch (config.fieldType) {
     case FieldType.INPUT:
@@ -160,7 +160,7 @@ const InputRenderer = ({
   }
 };
 
-const CustomFormField = (props: FormFieldProps) => {
+const CustomFormField = <T,>(props: FormFieldProps<T>) => {
   const { control, name, label, fieldType } = props;
 
   return (
