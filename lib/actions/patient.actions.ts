@@ -16,6 +16,14 @@ import {
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
 
+// Helper type guard for property checks
+function hasProperty<T extends object, K extends PropertyKey>(
+  obj: T,
+  prop: K
+): obj is T & Record<K, unknown> {
+  return obj && typeof obj === "object" && prop in obj;
+}
+
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -32,9 +40,10 @@ export const createUser = async (user: CreateUserParams) => {
     if (
       typeof error === "object" &&
       error !== null &&
-      "cause" in error &&
-      (error as any).cause &&
-      (error as any).cause.code === "ETIMEDOUT"
+      hasProperty(error, "cause") &&
+      typeof (error as { cause: unknown }).cause === "object" &&
+      (error as { cause: { code?: string } }).cause &&
+      (error as { cause: { code?: string } }).cause.code === "ETIMEDOUT"
     ) {
       console.error("Network error (ETIMEDOUT) in createUser:", error);
       return {
@@ -45,8 +54,8 @@ export const createUser = async (user: CreateUserParams) => {
     if (
       typeof error === "object" &&
       error !== null &&
-      "code" in error &&
-      (error as any).code === 409
+      hasProperty(error, "code") &&
+      (error as { code?: number }).code === 409
     ) {
       try {
         const existingUser = await users.list([
