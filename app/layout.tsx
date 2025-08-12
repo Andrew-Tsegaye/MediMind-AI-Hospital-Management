@@ -21,6 +21,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className="remove-scrollbar">
       <body
+        suppressHydrationWarning
         className={cn(
           "min-h-screen bg-dark-300 font-sans antialiased",
           fontSans.variable

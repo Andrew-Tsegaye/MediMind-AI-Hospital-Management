@@ -33,7 +33,7 @@ export enum FieldType {
 
 interface FormFieldProps<T extends FieldValues> {
   control: Control<T>;
-  name: string;
+  name: Path<T>;
   label?: string;
   placeholder?: string;
   iconSrc?: string;
