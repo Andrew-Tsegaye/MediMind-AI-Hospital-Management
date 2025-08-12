@@ -32,7 +32,7 @@ export const PatientForm = () => {
     setIsLoading(true);
     try {
       const user = await createUser(values);
-      if (user) {
+      if (user && "$id" in user) {
         router.push(`/patients/${user.$id}/register`);
       } else {
         alert(
