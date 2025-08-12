@@ -2,7 +2,11 @@ import Image from "next/image";
 import ReactDatePicker from "react-datepicker";
 import { E164Number } from "libphonenumber-js/core";
 import PhoneInput from "react-phone-number-input";
-import { Control } from "react-hook-form";
+import type {
+  Control,
+  FieldValues,
+  ControllerRenderProps,
+} from "react-hook-form";
 
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -26,7 +30,7 @@ export enum FieldType {
   SKELETON = "skeleton",
 }
 
-interface FormFieldProps<T = unknown> {
+interface FormFieldProps<T extends FieldValues> {
   control: Control<T>;
   name: string;
   label?: string;
@@ -37,15 +41,15 @@ interface FormFieldProps<T = unknown> {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
-  renderSkeleton?: (field: T) => React.ReactNode;
+  renderSkeleton?: (field: ControllerRenderProps<T, any>) => React.ReactNode;
   fieldType: FieldType;
 }
 
-const InputRenderer = <T,>({
+const InputRenderer = <T extends FieldValues>({
   field,
   config,
 }: {
-  field: T;
+  field: ControllerRenderProps<T, any>;
   config: FormFieldProps<T>;
 }) => {
   switch (config.fieldType) {
@@ -160,7 +164,7 @@ const InputRenderer = <T,>({
   }
 };
 
-const CustomFormField = <T,>(props: FormFieldProps<T>) => {
+const CustomFormField = <T extends FieldValues>(props: FormFieldProps<T>) => {
   const { control, name, label, fieldType } = props;
 
   return (
