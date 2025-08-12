@@ -4,13 +4,9 @@ import Link from "next/link";
 import { PatientForm } from "@/components/forms/PatientForm";
 import { PasskeyModal } from "@/components/PasskeyModal";
 
-interface HomeProps {
-  searchParams?: {
-    [key: string]: string | string[] | undefined;
-  };
-}
-const Home = ({ searchParams }: HomeProps) => {
-  const isAdmin = searchParams?.admin === "true";
+const Home = async ({ searchParams }: SearchParamProps) => {
+  const params = await searchParams;
+  const isAdmin = params?.admin === "true";
 
   return (
     <main className="flex w-full h-screen overflow-hidden bg-dark-300 text-light-200">
