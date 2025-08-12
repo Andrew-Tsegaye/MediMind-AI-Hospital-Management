@@ -6,6 +6,7 @@ import type {
   Control,
   FieldValues,
   ControllerRenderProps,
+  Path,
 } from "react-hook-form";
 
 import { Checkbox } from "./ui/checkbox";
@@ -41,7 +42,9 @@ interface FormFieldProps<T extends FieldValues> {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
-  renderSkeleton?: (field: ControllerRenderProps<T, any>) => React.ReactNode;
+  renderSkeleton?: (
+    field: ControllerRenderProps<T, Path<T>>
+  ) => React.ReactNode;
   fieldType: FieldType;
 }
 
@@ -49,7 +52,7 @@ const InputRenderer = <T extends FieldValues>({
   field,
   config,
 }: {
-  field: ControllerRenderProps<T, any>;
+  field: ControllerRenderProps<T, Path<T>>;
   config: FormFieldProps<T>;
 }) => {
   switch (config.fieldType) {
